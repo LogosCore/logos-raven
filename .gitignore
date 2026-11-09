@@ -1,0 +1,11 @@
+# Local runtime configuration
+.env
+
+# Compiled binaries
+/raven-factory
+
+# Dev only
+go.work
+go.work.sum
+docker-compose.override.yml
+.dev-bin/

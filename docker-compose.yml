@@ -1,0 +1,32 @@
+# Local development stack for Raven: the factory alone. Joins logos-core's
+# network to reach core (its factory link) and its RabbitMQ. Start
+# logos-core and the HTTP channel first, then:
+#
+#   docker compose up -d --build
+services:
+  raven-factory:
+    build:
+      context: .
+      args:
+        VERSION: dev
+    image: logos-raven:dev
+    container_name: logos-raven
+    restart: unless-stopped
+    environment:
+      FACTORY_ID: ${FACTORY_ID:-raven-local}
+      # Core's own address, not a front: core calls Raven for every message
+      # of its minions over the factory link.
+      LOGOS_CORE_BASE_URL: ${LOGOS_CORE_BASE_URL:-http://logos-core-dev:8002}
+      RABBITMQ_HOST: ${RABBITMQ_HOST:-logos-rabbitmq}
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_USER: ${RABBITMQ_USER:-logos}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:?set RABBITMQ_PASSWORD in .env}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST:-/}
+      LOG_FORMAT: ${LOG_FORMAT:-json}
+    networks:
+      - logos
+
+networks:
+  logos:
+    external: true
+    name: logos-core_logos

@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # The script tests run the generated script under PowerShell
+      # (preinstalled on ubuntu-latest); RAVEN_REQUIRE_PWSH makes a missing
+      # pwsh fail them rather than skip.
+      - name: PowerShell
+        run: pwsh -NoProfile -Command '$PSVersionTable.PSVersion.ToString()'
+
+      - name: Test
+        run: go test ./...
+        env:
+          RAVEN_REQUIRE_PWSH: "1"
+
+  # The script under Windows PowerShell 5.1, which resolves .NET overloads
+  # its own way (a Min(int, double) that 7 takes as doubles overflowed 5.1).
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: go test ./...
+        env:
+          RAVEN_PWSH: powershell.exe
+          RAVEN_REQUIRE_PWSH: "1"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      # golangci-lint's default linters (errcheck, govet, ineffassign,
+      # staticcheck, unused), no config file: the code is kept at 0 issues, so
+      # any finding fails the job. The version is core's (ci-core.yml); the
+      # action's major must match the linter's (v7 for v2).
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: v2.13.2
