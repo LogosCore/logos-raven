@@ -4,10 +4,10 @@ github.com/fxamacker/cbor/v2 v2.9.6 h1:NHZPxuUjJXQjX9itA785y/5NKSlI4HQ+S7noZsmI7
 github.com/fxamacker/cbor/v2 v2.9.6/go.mod h1:4EaZp6ClVunETjQ4GHmGNzysDK91Lr+r6Yz6tJqzVCw=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/logoscore/logos-golang-factory-core v0.3.0 h1:jMxK5bMrnDQPHcrT6L3xR0Aef/r9dv8KP0JAn0LWkn0=
-github.com/logoscore/logos-golang-factory-core v0.3.0/go.mod h1:z5/IlcGyNj1v4KfvropgOvcNnIigICxPm9Doz3OR7qI=
-github.com/logoscore/logos-golang-module-core v0.2.43 h1:hz5naqyi+0KhCsoN+CImfB32WMGTcPtjkQCBgfw4cYw=
-github.com/logoscore/logos-golang-module-core v0.2.43/go.mod h1:LOEmh6r8S4SQ8e5tN2LJOnu9iYYFkPWvwG0CmvrM1sQ=
+github.com/logoscore/logos-golang-factory-core v0.3.1 h1:ZocM9gKIm95lqjqkxpLE7fFVqWV/7JCNZ2TloOQjLOA=
+github.com/logoscore/logos-golang-factory-core v0.3.1/go.mod h1:56SPo86AXPW/DF1e7geP5J0u4fSoozvUhttqKQK+Goo=
+github.com/logoscore/logos-golang-module-core v0.3.0 h1:CFUVVb3O67DBneHGMvKEy1guSOxtvZ7sN5CjcZ/RI1w=
+github.com/logoscore/logos-golang-module-core v0.3.0/go.mod h1:SUF2NzJnIcLekq6KX19OIWMnnGp6bqrP+dI1bNoKuas=
 github.com/logoscore/logos-golang-protocol v0.48.1 h1:WLGX44yyEYRg6gBlwKy017lE8RlqJywsyZDFPS3OeOM=
 github.com/logoscore/logos-golang-protocol v0.48.1/go.mod h1:u5+5QwLHML635VWwWPK7IwpNbM5Md98cE5wxTf03bgc=
 github.com/rabbitmq/amqp091-go v1.10.0 h1:STpn5XsHlHGcecLmMFCtg7mqq0RnD+zFr4uzukfVhBw=

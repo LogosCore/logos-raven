@@ -79,8 +79,10 @@ func main() {
 		Build:               &schema,
 		Builder:             &raven{version: version},
 		MaxConcurrentBuilds: 4,
-		// Core calls Raven for every message of its builds' minions: the
-		// factory link opens on core's own URL, not through a front.
+		// Core calls Raven for every message of its builds' minions over the
+		// factory link: core's own URL, or its front (logos-nginx passes the
+		// WebSocket). Over HTTPS, module-core's coretls settings say how
+		// core's certificate is trusted.
 		Codec:   ravenCodec{},
 		CoreURL: env("LOGOS_CORE_BASE_URL", "http://localhost:8002"),
 	})

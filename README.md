@@ -54,10 +54,12 @@ Start logos-core and the HTTP channel, put `RABBITMQ_PASSWORD` (core's
 `RABBITMQ_DEFAULT_PASS`) in `.env`, then `docker compose up -d --build`. The
 factory reaches core's own address for its factory link
 (`LOGOS_CORE_BASE_URL`, `http://logos-core-dev:8002` on the `logos-core_logos`
-network): core's nginx front does not pass WebSocket upgrades on
-`/api/factory/link`.
+network), or core's front over HTTPS (the `logos-nginx` image passes the
+link's WebSocket).
 
-Environment: `FACTORY_ID` (`raven-local`), `LOGOS_CORE_BASE_URL`,
+Environment: `FACTORY_ID` (`raven-local`), `LOGOS_CORE_BASE_URL` (and, over
+HTTPS to a self-signed core, `LOGOS_CORE_CA_FILE`, `LOGOS_CORE_CERT_SHA256` or
+`LOGOS_CORE_TLS_INSECURE`: [How modules reach core](https://logoscore.github.io/logos-docs/core-infrastructure/#how-modules-reach-core)),
 `RABBITMQ_HOST` / `RABBITMQ_PORT` / `RABBITMQ_USER` / `RABBITMQ_PASSWORD` /
 `RABBITMQ_VHOST`, `LOG_FORMAT` (`json` or `text`).
 
