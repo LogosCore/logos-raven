@@ -54,6 +54,11 @@ func TestSchema(t *testing.T) {
 	if _, err := mgmt.New(manifest()); err != nil {
 		t.Fatalf("manifest: %v", err)
 	}
+	for name, svg := range map[string]string{"icon": icon, "iconLight": iconLight} {
+		if err := protocol.ValidateIcon(svg); err != nil {
+			t.Errorf("%s: %v", name, err)
+		}
+	}
 	// The script's ops are the schema's.
 	for name, op := range map[string]int{"OpHello": opHello, "OpEcho": opEcho} {
 		if !strings.Contains(scriptTemplate, fmt.Sprintf("$%s = %d\n", name, op)) {

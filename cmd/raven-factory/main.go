@@ -7,6 +7,7 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"log"
 	"log/slog"
 	"net"
@@ -25,6 +26,19 @@ import (
 // version is reported at registration and goes into the scripts' hello; set
 // with -ldflags "-X main.version=...".
 var version = "dev"
+
+// icon is Raven's icon in core's UI, sent at registration: a raven, traced
+// from its logo without the PowerShell tile it perches on. The app paints
+// an icon in one colour, so for dark themes it is the whole bird, filled.
+//
+//go:embed icon.svg
+var icon string
+
+// iconLight is the same raven for light themes: the logo's navy body, its
+// bright highlights left out, as the logo shows them.
+//
+//go:embed icon-light.svg
+var iconLight string
 
 func main() {
 	instance := env("FACTORY_ID", "raven-local")
@@ -56,6 +70,8 @@ func main() {
 				Instance:    instance,
 				Version:     version,
 				Description: "Raven: builds PowerShell scripts that check in through the HTTP channel, speaking CLIXML Raven translates for core (a codec test, sealing nothing)",
+				Icon:        icon,
+				IconLight:   iconLight,
 			},
 			Management: mgmtSrv,
 			Logs:       logs,
