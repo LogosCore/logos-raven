@@ -1,0 +1,3 @@
+# LF everywhere, on Windows checkouts too: the script template is embedded
+# in the binary, and a test reads it line by line.
+* text=auto eol=lf

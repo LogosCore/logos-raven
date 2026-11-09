@@ -76,6 +76,9 @@ func TestBuild(t *testing.T) {
 		t.Fatalf("result: %+v", out.Result)
 	}
 	script := string(out.Artifact)
+	if !strings.HasPrefix(script, "\ufeff# Raven minion") {
+		t.Errorf("the script does not start with UTF-8's byte order mark: %q", script[:min(20, len(script))])
+	}
 	for _, want := range []string{
 		"$RavenBuild = '5b0c4f6e-8a1d-4c2b-9e7f-3d2a1b0c9e8f'",
 		"$RavenVersion = 'v9'",

@@ -111,7 +111,10 @@ func (r *raven) Build(ctx context.Context, job *factory.Job) (factory.Result, er
 
 // render is the script a request asks for: its build id, connections,
 // greeting and the commands it was built with, each value a PowerShell
-// literal. The suite's keys are not in it: raven.raven seals nothing.
+// literal. The suite's keys are not in it: raven.raven seals nothing. It
+// starts with UTF-8's byte order mark: Windows PowerShell 5.1 reads a
+// script without one as the system's ANSI code page, which mangles any
+// text past ASCII (a greeting's quotes, say).
 func render(req protocol.BuildRequest, version string) (string, int, error) {
 	if len(req.BuildID) != 36 {
 		return "", 0, factory.Fail("bad_build_id", "the build id is not a UUID")
@@ -130,7 +133,7 @@ func render(req protocol.BuildRequest, version string) (string, int, error) {
 			ops = append(ops, strconv.Itoa(c.Op))
 		}
 	}
-	script := strings.NewReplacer(
+	script := utf8BOM + strings.NewReplacer(
 		"__BUILD_ID__", req.BuildID,
 		"__VERSION__", psQuote(version),
 		"__GREETING__", psQuote(greeting),
@@ -199,6 +202,9 @@ func connections(req protocol.BuildRequest) ([]string, error) {
 	}
 	return out, nil
 }
+
+// utf8BOM marks a script as UTF-8 for Windows PowerShell 5.1.
+const utf8BOM = "\ufeff"
 
 func str(v any) string {
 	s, _ := v.(string)
