@@ -80,9 +80,10 @@ func main() {
 		Builder:             &raven{version: version},
 		MaxConcurrentBuilds: 4,
 		// Core calls Raven for every message of its builds' minions over the
-		// factory link: core's own URL, or its front (logos-nginx passes the
-		// WebSocket). Over HTTPS, module-core's coretls settings say how
-		// core's certificate is trusted.
+		// factory link, and builds fetch their files from core and upload the
+		// artifact to it: core's own URL, or its front (logos-nginx passes the
+		// WebSocket and the transfers). Over HTTPS, module-core's coretls
+		// settings say how core's certificate is trusted.
 		Codec:   ravenCodec{},
 		CoreURL: env("LOGOS_CORE_BASE_URL", "http://localhost:8002"),
 	})

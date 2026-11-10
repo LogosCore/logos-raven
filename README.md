@@ -52,10 +52,10 @@ exchanges, `-Seconds N` to stop after N seconds.
 
 Start logos-core and the HTTP channel, put `RABBITMQ_PASSWORD` (core's
 `RABBITMQ_DEFAULT_PASS`) in `.env`, then `docker compose up -d --build`. The
-factory reaches core's own address for its factory link
-(`LOGOS_CORE_BASE_URL`, `http://logos-core-dev:8002` on the `logos-core_logos`
-network), or core's front over HTTPS (the `logos-nginx` image passes the
-link's WebSocket).
+factory reaches core's own address for its factory link and its builds'
+uploads (`LOGOS_CORE_BASE_URL`, `http://logos-core-dev:8002` on the
+`logos-core_logos` network), or core's front over HTTPS (the `logos-nginx`
+image passes the link's WebSocket and the uploads).
 
 Environment: `FACTORY_ID` (`raven-local`), `LOGOS_CORE_BASE_URL` (and, over
 HTTPS to a self-signed core, `LOGOS_CORE_CA_FILE`, `LOGOS_CORE_CERT_SHA256` or
