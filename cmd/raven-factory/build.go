@@ -23,15 +23,15 @@ var buildSchema = protocol.BuildSchema{
 	SchemaVersion: protocol.BuildSchemaV3,
 	Version:       1,
 	Channels: []protocol.BuildChannel{{
-		ModuleName: httpChannel, Versions: []int{3},
+		ModuleName: httpChannel, Num: 1, Versions: []int{3},
 		Kinds: []protocol.BuildKind{{Kind: protocol.KindReverseCall, Fields: []protocol.FieldSpec{
 			{
-				Key: "method", Type: protocol.FieldEnum, Label: "Method", Default: "POST", Group: "HTTP", Order: 1,
+				Key: "method", Num: 1, Type: protocol.FieldEnum, Label: "Method", Default: "POST", Group: "HTTP", Order: 1,
 				Description: "The HTTP method the script sends its messages with.",
 				Options:     []protocol.EnumOption{{Value: "POST"}, {Value: "PUT"}},
 			},
 			{
-				Key: "path", Type: protocol.FieldString, Label: "Path", Default: "/", Group: "HTTP", Order: 2,
+				Key: "path", Num: 2, Type: protocol.FieldString, Label: "Path", Default: "/", Group: "HTTP", Order: 2,
 				Description: "The path every request goes to, under the endpoint's base URL.",
 				Pattern:     `^/[A-Za-z0-9._~!$&'()*+,;=:@%/-]*$`, MaxLength: 256,
 			},
@@ -46,7 +46,7 @@ var buildSchema = protocol.BuildSchema{
 	Codec: &protocol.BuildCodec{Growth: 400, Overhead: 4096, Timeout: "5s"},
 	Fields: []protocol.FieldSpec{
 		{
-			Key: "greeting", Type: protocol.FieldString, Label: "Greeting", Default: "hello from Raven", MaxLength: 200,
+			Key: "greeting", Num: 1, Type: protocol.FieldString, Label: "Greeting", Default: "hello from Raven", MaxLength: 200,
 			Order: 1, Description: "What the script answers the hello command with.",
 		},
 	},
