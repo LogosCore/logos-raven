@@ -1,0 +1,9 @@
+# The image builds from go.mod alone: local workspaces, settings and
+# host-built binaries stay out.
+.git
+go.work
+go.work.sum
+.env
+.dev-bin
+docker-compose.override.yml
+raven-factory

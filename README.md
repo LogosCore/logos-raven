@@ -61,7 +61,8 @@ Environment: `FACTORY_ID` (`raven-local`), `LOGOS_CORE_BASE_URL` (and, over
 HTTPS to a self-signed core, `LOGOS_CORE_CA_FILE`, `LOGOS_CORE_CERT_SHA256` or
 `LOGOS_CORE_TLS_INSECURE`: [How modules reach core](https://logoscore.github.io/logos-docs/core-infrastructure/#how-modules-reach-core)),
 `RABBITMQ_HOST` / `RABBITMQ_PORT` / `RABBITMQ_USER` / `RABBITMQ_PASSWORD` /
-`RABBITMQ_VHOST`, `LOG_FORMAT` (`json` or `text`).
+`RABBITMQ_VHOST` (`localhost` / `5672` / `logos` / required: logos-core's
+`RABBITMQ_DEFAULT_PASS` / `/`), `LOG_FORMAT` (`json` or `text`).
 
 ## Tests
 

@@ -8,6 +8,7 @@ package main
 import (
 	"context"
 	_ "embed"
+	"errors"
 	"log"
 	"log/slog"
 	"net"
@@ -61,10 +62,14 @@ func main() {
 	if err != nil {
 		fatal("management", "err", err)
 	}
+	broker, err := amqpURL()
+	if err != nil {
+		fatal("config", "err", err)
+	}
 	schema := buildSchema
 	err = factory.Run(ctx, factory.Config{
 		Config: module.Config{
-			AMQPURL: amqpURL(),
+			AMQPURL: broker,
 			Identity: lifecycle.Identity{
 				ModuleName:  "raven",
 				Instance:    instance,
@@ -99,15 +104,22 @@ func fatal(msg string, args ...any) {
 	os.Exit(1)
 }
 
-func amqpURL() string {
+// amqpURL is core's broker's: its user is logos-core's
+// RABBITMQ_DEFAULT_USER; its password (RABBITMQ_DEFAULT_PASS) has no
+// default that could fit.
+func amqpURL() (string, error) {
+	password := os.Getenv("RABBITMQ_PASSWORD")
+	if password == "" {
+		return "", errors.New("RABBITMQ_PASSWORD is required: core's broker password (logos-core's RABBITMQ_DEFAULT_PASS)")
+	}
 	u := url.URL{
 		Scheme: "amqp",
-		User:   url.UserPassword(env("RABBITMQ_USER", "guest"), env("RABBITMQ_PASSWORD", "guest")),
+		User:   url.UserPassword(env("RABBITMQ_USER", "logos"), password),
 		Host:   net.JoinHostPort(env("RABBITMQ_HOST", "localhost"), env("RABBITMQ_PORT", "5672")),
 		// amqp091 takes the vhost from the path minus its leading "/".
 		Path: "/" + env("RABBITMQ_VHOST", "/"),
 	}
-	return u.String()
+	return u.String(), nil
 }
 
 func env(key, def string) string {
