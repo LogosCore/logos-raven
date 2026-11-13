@@ -30,7 +30,9 @@ var version = "dev"
 
 // icon is Raven's icon in core's UI, sent at registration: a raven, traced
 // from its logo without the PowerShell tile it perches on. The app paints
-// an icon in one colour, so for dark themes it is the whole bird, filled.
+// an icon in one colour, so for dark themes it is the bird filled, its
+// wing, feathers and crest told apart by dark lines where the light icon's
+// highlights meet its body.
 //
 //go:embed icon.svg
 var icon string
