@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-`logos-raven` (`github.com/logoscore/logos-raven`): Raven, a Logos factory that builds PowerShell scripts (Windows PowerShell 5.1, PowerShell 7), minions that check in through the HTTP channel (`reverse-call`) and do `hello` and `echo`. A test of core's codec mechanics (docs: contracts/minion-messages/codecs, "Raven: the test factory"): envelope `raven.clixml` (PowerShell's CLIXML), suite `raven.raven` (seals nothing: a lie to core, it protects nothing). README.md has the schema, the script's behaviour and the dev stack.
+`logos-raven` (`github.com/logoscore/logos-raven`): Raven, a Logos factory that builds PowerShell scripts (Windows PowerShell 5.1, PowerShell 7), minions that check in through the HTTP channel (`reverse-call`) and do `hello` and `echo`. A test of core's codec mechanics (docs: contracts/minion-messages/codecs; Raven itself is documented in README.md only): envelope `raven.clixml` (PowerShell's CLIXML), suite `raven.raven` (seals nothing: a lie to core, it protects nothing). README.md has the schema, the script's behaviour and the dev stack.
 
 ## Commands
 
