@@ -107,12 +107,26 @@ func TestBuild(t *testing.T) {
 		"bad_connection": func(r *protocol.BuildRequest) {
 			r.Connections[1].Endpoint.Params["checkin_interval"] = "soon"
 		},
+		// The HTTP channel's version 4: factory-based, the factory was to
+		// decide the addresses, and Raven decides none.
+		"factory_based_http": func(r *protocol.BuildRequest) {
+			r.Connections[1].Endpoint.Channel.SchemaVersion = 4
+			r.Connections[1].Endpoint.Params = map[string]any{"mode": httpFactoryBased}
+		},
 	} {
 		r := request(t)
 		mutate(&r)
 		if _, _, err := render(r, "v9"); err == nil || !strings.Contains(err.Error(), name) {
 			t.Errorf("%s: %v", name, err)
 		}
+	}
+
+	// A url-based connection of version 4 is a version 3 one.
+	r := request(t)
+	r.Connections[1].Endpoint.Channel.SchemaVersion = 4
+	r.Connections[1].Endpoint.Params["mode"] = "url-based"
+	if script, n, err := render(r, "v9"); err != nil || n != 2 || !strings.Contains(script, "Urls = @('http://10.0.0.5:8080')") {
+		t.Errorf("a url-based version 4 connection: %d, %v", n, err)
 	}
 }
 

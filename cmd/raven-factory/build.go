@@ -23,7 +23,11 @@ var buildSchema = protocol.BuildSchema{
 	SchemaVersion: protocol.BuildSchemaV3,
 	Version:       1,
 	Channels: []protocol.BuildChannel{{
-		ModuleName: httpChannel, Num: 1, Versions: []int{3},
+		// Version 4 adds the mode: Raven builds a url-based connection, the
+		// default, as a version 3 one, and refuses a factory-based one
+		// (connections): its scripts take their addresses from the base
+		// URL, and Raven decides none.
+		ModuleName: httpChannel, Num: 1, Versions: []int{3, 4},
 		Kinds: []protocol.BuildKind{{Kind: protocol.KindReverseCall, Fields: []protocol.FieldSpec{
 			{
 				Key: "method", Num: 1, Type: protocol.FieldEnum, Label: "Method", Default: "POST", Group: "HTTP", Order: 1,
@@ -65,8 +69,11 @@ var buildSchema = protocol.BuildSchema{
 }
 
 const (
-	httpChannel  = "http"
-	targetScript = "ps1"
+	httpChannel = "http"
+	// httpFactoryBased is the HTTP channel's mode (its connection schema's
+	// version 4) in which the factory decides a minion's addresses.
+	httpFactoryBased = "factory-based"
+	targetScript     = "ps1"
 	// The commands' numbers: the script's $OpHello and $OpEcho.
 	opHello = 1
 	opEcho  = 2
@@ -144,7 +151,8 @@ func render(req protocol.BuildRequest, version string) (string, int, error) {
 }
 
 // connections are the build's connections, each a PowerShell hashtable
-// literal, in the order the script tries them.
+// literal, in the order the script tries them. A factory-based one fails
+// the build: the script connects to the base URL, and Raven decides none.
 func connections(req protocol.BuildRequest) ([]string, error) {
 	var out []string
 	for i, c := range req.Connections {
@@ -152,6 +160,10 @@ func connections(req protocol.BuildRequest) ([]string, error) {
 			return nil, factory.Fail("bad_connection", fmt.Sprintf("connection %d is not an HTTP reverse-call one", i+1))
 		}
 		p, v := c.Endpoint.Params, c.Values
+		if p["mode"] == httpFactoryBased {
+			return nil, factory.Fail("factory_based_http", fmt.Sprintf(
+				"connection %d: a factory-based HTTP connection leaves the addresses to the factory, and Raven decides none: give it a url-based endpoint", i+1))
+		}
 		urls := []string{psQuote(str(p["base_url"]))}
 		if extra, ok := p["extra_base_urls"].([]any); ok {
 			for _, u := range extra {

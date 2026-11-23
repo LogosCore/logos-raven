@@ -26,7 +26,7 @@ core over the factory link.
 
 | | |
 |---|---|
-| Channel | `http` version 3, kind `reverse-call`; Raven's own fields `method` (POST, PUT) and `path` (`/`) |
+| Channel | `http` versions 3 and 4, kind `reverse-call`; Raven's own fields `method` (POST, PUT) and `path` (`/`). Version 4's `mode`: a `url-based` connection, the default, builds as a version 3 one; a `factory-based` one, whose addresses the factory is to decide, fails the build (`factory_based_http`): Raven decides none, and its scripts connect to the base URL |
 | Codec | crypto `raven.raven`, envelope `raven.clixml`, `codec` growth 400 %, overhead 4096 B, timeout 5s. CLIXML is some 20 times CBOR on a small message, a third more on bytes: core sends fewer items when a message would outgrow the bound |
 | Field | `greeting` ("hello from Raven") |
 | Target | `ps1`, a `script` for `windows/any`, `linux/any`, `darwin/any` |
